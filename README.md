@@ -1,7 +1,10 @@
 # threadDemo
+### 线程
+1. 线程优先级：优先级0--->10,优先级越高越先执行
+2. 前台进程：调用Thread的setDaemon(boolean)方法
 ### 线程同步
 	多个线程同时访问同一数据时有可能出现线程安全问题，及读取到的数据不正确
-1. 采用线程同步的方式处理
+1. 采用线程同步的方式处理-->隐式的加锁对象
 	1. 同步代码块
 
 			synchronized(监视器对象){
@@ -12,7 +15,7 @@
 		2. 非静态同步方法：该监视器对象为当前类的实例对象
 	3. 注意事项
 		1. 要实现线程的同步，监视器对象必须相同
-2. 采用Lock锁进制
+2. 采用Lock锁进制--->显示的指定的加锁的对象
 	1. Lock是jdk1.5之后提供的线程同步的机制，Lock是控制多个线程对共享资源进行访问的工具。每次只能有一个线程对lock对象加锁，线程开始访问共享资源之前先获得lock对象。ReadWriteLock可允许对共享资源的并发访问，通常在线程安全控制中一般使用ReentrantLock(可重入)
 	1. 在需要同步的地方调用lock()方法获取锁
 	2. 在需要释放锁的地方调用unlock()方法--->通常放在finally语句块中
@@ -37,3 +40,23 @@
 	1. await:类似wait方法，导致当前线程等待
 	2. signal:唤醒在此Lock对象上等待的单个线程(多个则随机)
 	3. signalAll:唤醒此Lock对象上等待的所有线程
+4. 使用管道流
+	1. 使用new创建管道流输入流和管道输出流对象
+	2. 使用管道输入流或管道输出流对象的connect方法把两个输入流和输出流连接起来
+	3. 将管道输入流、管道输出流分别传入两个线程
+	4. 两个线程可以分别依赖各自的管道输入流、管道输出流进行通信
+
+			PipedReader reader=null;
+			PipedWriter writer=null;
+			
+			try {
+				reader=new PipedReader();
+				writer=new PipedWriter();
+				//将输出流连接到输入流上
+				writer.connect(reader);
+				
+				new WriterThread(writer).start();
+				new ReaderThread(reader).start();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
