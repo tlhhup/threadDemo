@@ -60,3 +60,21 @@
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+###增强特性
+1. Callable：视为Runable的增强类，其执行方法call具有返回值且可以抛出异常
+2. Future：作为Callable的返回值
+3. FutureTask：封装Callable对象的call方法的返回值
+	1. 使用：
+		1. 创建Callable的实现类
+		2. 创建Callable实现类对象,使用FutureTask进行包装，该FutureTask封装了Callable对象的call方法的返回值
+		3. 使用FutureTask对象作为Thread对象的target创建、并启动线程
+		4. 调用FutureTask对象的方法来获取子线程执行后的返回值
+5. 线程池
+	1. Executors：用户创建线程池对象的一个工厂接口
+	2. ExecutorService
+	3. ThreadLocal：线程局部变量，在一个线程中可以共享该变量，对每个线程都创建新的副本数据
+4. 线程安全的集合
+	1. 通过Collections工具类提供的方法可以将非线程安全的集合转换为线程安全的集合
+	2. 在jdk1.5之后在java.util.concurrent包中提供了线程安全的集合
+		1. ConcurrentLinkedQueue：一个基于链接节点的无界线程安全队列。此队列按照 FIFO（先进先出）原则对元素进行排序，此队列不允许使用 null 元素。
+		2. ConcurrentMap：默认情况支持16条线程并发写入
